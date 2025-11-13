@@ -1,0 +1,258 @@
+/* Main Layout - CSS Grid Architecture */
+
+/* === MAIN GRID CONTAINER === */
+
+.app-container {
+    display: grid;
+    grid-template-columns: 1fr var(--filter-panel-width);
+    grid-template-rows: var(--header-height) 1fr;
+    grid-template-areas:
+        "header header"
+        "canvas filter";
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* === HEADER (Top, Full Width) === */
+
+.app-header {
+    grid-area: header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--space-lg);
+    border-bottom: var(--border);
+    background-color: var(--color-bg);
+    z-index: var(--z-header);
+}
+
+.logo {
+    font-size: var(--font-size-lg);
+    letter-spacing: var(--letter-spacing);
+}
+
+.info-button {
+    width: 32px;
+    height: 32px;
+    border: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-md);
+}
+
+.info-button:hover {
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
+/* === CANVAS AREA (Main View) === */
+
+.canvas-area {
+    grid-area: canvas;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-bg);
+    z-index: var(--z-canvas);
+}
+
+.view-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* === FILTER PANEL (Bottom Right, Fixed) === */
+
+.filter-panel {
+    grid-area: filter;
+    border-left: var(--border);
+    background-color: var(--color-bg);
+    padding: var(--space-lg);
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - var(--header-height));
+    z-index: var(--z-filter-panel);
+}
+
+/* Custom scrollbar for filter panel */
+.filter-panel::-webkit-scrollbar {
+    width: 4px;
+}
+
+.filter-panel::-webkit-scrollbar-track {
+    background: var(--color-gray-lightest);
+}
+
+.filter-panel::-webkit-scrollbar-thumb {
+    background: var(--color-gray-light);
+}
+
+.filter-panel::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gray);
+}
+
+/* === MODALS === */
+
+.modal {
+    display: none; /* Hidden by default, shown via JS */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: var(--z-modal-overlay);
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-overlay);
+    z-index: var(--z-modal-overlay);
+    animation: fadeIn var(--transition-base);
+}
+
+.modal-content {
+    position: relative;
+    background-color: var(--color-bg);
+    z-index: var(--z-modal-content);
+    animation: modalSlideIn var(--transition-smooth);
+}
+
+.modal-close {
+    position: absolute;
+    top: var(--space-base);
+    right: var(--space-base);
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-xl);
+    border: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg);
+    z-index: 10;
+}
+
+.modal-close:hover {
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
+/* === INFO MODAL === */
+
+.info-modal-content {
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    padding: var(--space-xxl);
+    overflow-y: auto;
+}
+
+.info-modal-content .subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xl);
+}
+
+.info-modal-content section {
+    margin-bottom: var(--space-xl);
+}
+
+.info-modal-content section:last-child {
+    margin-bottom: 0;
+}
+
+.info-modal-content h2 {
+    margin-bottom: var(--space-base);
+    border-bottom: var(--border);
+    padding-bottom: var(--space-sm);
+}
+
+/* === DETAIL MODAL === */
+
+.detail-modal-content {
+    width: 90%;
+    max-width: 1200px;
+    height: 60vh;
+    max-height: 600px;
+    padding: var(--space-xl);
+}
+
+.detail-layout {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: var(--space-xl);
+    height: 100%;
+    padding-top: var(--space-xl); /* Space for close button */
+}
+
+.detail-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: var(--border);
+    padding-right: var(--space-xl);
+    overflow: hidden;
+}
+
+.detail-image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Never stretch */
+}
+
+.detail-metadata {
+    overflow-y: auto;
+    padding-right: var(--space-base);
+}
+
+/* Custom scrollbar for detail metadata */
+.detail-metadata::-webkit-scrollbar {
+    width: 4px;
+}
+
+.detail-metadata::-webkit-scrollbar-track {
+    background: var(--color-gray-lightest);
+}
+
+.detail-metadata::-webkit-scrollbar-thumb {
+    background: var(--color-gray-light);
+}
+
+.detail-metadata::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gray);
+}
+
+/* === ANIMATIONS === */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
