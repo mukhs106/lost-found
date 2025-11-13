@@ -41,14 +41,15 @@ const FilterPanel = {
      */
     cacheElements() {
         this.elements = {
+            // Filter panel
+            panel: DOM.select('#filterPanel'),
+            collapseToggle: DOM.select('#collapseToggle'),
+
             // View toggle
             viewButtons: DOM.selectAll('.view-toggle-btn'),
 
             // Theme checkboxes
             themeCheckboxes: DOM.selectAll('input[name="theme"]'),
-
-            // Memory state buttons
-            stateButtons: DOM.selectAll('.state-btn'),
 
             // Timeline sliders
             timelineStart: DOM.select('#timelineRangeStart'),
@@ -72,6 +73,11 @@ const FilterPanel = {
      * Attach event listeners to all filter controls
      */
     attachEventListeners() {
+        // Collapse toggle
+        this.elements.collapseToggle.addEventListener('click', () => {
+            this.handleToggleCollapse();
+        });
+
         // View mode toggle
         this.elements.viewButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -84,14 +90,6 @@ const FilterPanel = {
         this.elements.themeCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => {
                 this.handleThemeChange();
-            });
-        });
-
-        // Memory state buttons
-        this.elements.stateButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const state = e.target.dataset.state;
-                this.handleStateChange(state);
             });
         });
 
@@ -119,6 +117,24 @@ const FilterPanel = {
     },
 
     /**
+     * Handle collapse toggle
+     */
+    handleToggleCollapse() {
+        const isCollapsed = this.elements.panel.classList.contains('collapsed');
+        if (isCollapsed) {
+            DOM.removeClass(this.elements.panel, 'collapsed');
+            DOM.addClass(this.elements.panel, 'expanded');
+            this.elements.collapseToggle.textContent = '−';
+            this.elements.collapseToggle.setAttribute('aria-label', 'Collapse filters');
+        } else {
+            DOM.removeClass(this.elements.panel, 'expanded');
+            DOM.addClass(this.elements.panel, 'collapsed');
+            this.elements.collapseToggle.textContent = '+';
+            this.elements.collapseToggle.setAttribute('aria-label', 'Expand filters');
+        }
+    },
+
+    /**
      * Handle view mode change
      */
     handleViewChange(view) {
@@ -137,18 +153,6 @@ const FilterPanel = {
             filters: {
                 selectedThemes,
                 quickJump: null // Clear quick jump when manually changing filters
-            }
-        });
-    },
-
-    /**
-     * Handle memory state button clicks
-     */
-    handleStateChange(state) {
-        AppState.update({
-            filters: {
-                memoryState: state,
-                quickJump: null
             }
         });
     },
@@ -218,15 +222,6 @@ const FilterPanel = {
         // Update theme checkboxes
         this.elements.themeCheckboxes.forEach(checkbox => {
             checkbox.checked = state.filters.selectedThemes.includes(checkbox.value);
-        });
-
-        // Update state buttons
-        this.elements.stateButtons.forEach(btn => {
-            if (btn.dataset.state === state.filters.memoryState) {
-                DOM.addClass(btn, 'active');
-            } else {
-                DOM.removeClass(btn, 'active');
-            }
         });
 
         // Update timeline sliders and labels

@@ -70,27 +70,42 @@
     grid-area: filter;
     border-left: var(--border);
     background-color: var(--color-bg);
-    padding: var(--space-lg);
-    overflow-y: auto;
-    overflow-x: hidden;
+    padding: 0;
+    overflow: visible;
     max-height: calc(100vh - var(--header-height));
     z-index: var(--z-filter-panel);
+    transition: width var(--transition-base);
 }
 
-/* Custom scrollbar for filter panel */
-.filter-panel::-webkit-scrollbar {
+.filter-panel.collapsed {
+    width: 60px;
+}
+
+.filter-panel.collapsed .filter-content {
+    display: none;
+}
+
+.filter-content {
+    padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: var(--filter-panel-max-height);
+}
+
+/* Custom scrollbar for filter content */
+.filter-content::-webkit-scrollbar {
     width: 4px;
 }
 
-.filter-panel::-webkit-scrollbar-track {
+.filter-content::-webkit-scrollbar-track {
     background: var(--color-gray-lightest);
 }
 
-.filter-panel::-webkit-scrollbar-thumb {
+.filter-content::-webkit-scrollbar-thumb {
     background: var(--color-gray-light);
 }
 
-.filter-panel::-webkit-scrollbar-thumb:hover {
+.filter-content::-webkit-scrollbar-thumb:hover {
     background: var(--color-gray);
 }
 

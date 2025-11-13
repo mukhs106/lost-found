@@ -30,14 +30,20 @@
             <div class="view-container" id="viewContainer"></div>
         </main>
 
-        <!-- Fixed Filter Panel (Bottom Right, Always Visible) -->
-        <aside class="filter-panel" id="filterPanel">
+        <!-- Fixed Filter Panel (Bottom Right, Collapsible) -->
+        <aside class="filter-panel expanded" id="filterPanel">
 
             <!-- Filter Header -->
             <div class="filter-header">
                 <h2>Filters</h2>
-                <button class="clear-filters" id="clearFilters">Clear All</button>
+                <div class="filter-header-actions">
+                    <button class="clear-filters" id="clearFilters">Clear All</button>
+                    <button class="collapse-toggle" id="collapseToggle" aria-label="Collapse filters">−</button>
+                </div>
             </div>
+
+            <!-- Collapsible Filter Content -->
+            <div class="filter-content" id="filterContent">
 
             <!-- View Mode Toggle -->
             <div class="filter-section">
@@ -87,16 +93,6 @@
                 </div>
             </div>
 
-            <!-- Memory State (3-position slider) -->
-            <div class="filter-section">
-                <h3>Memory State</h3>
-                <div class="memory-state-control">
-                    <button class="state-btn" data-state="lost">Lost</button>
-                    <button class="state-btn active" data-state="both">Both</button>
-                    <button class="state-btn" data-state="found">Found</button>
-                </div>
-            </div>
-
             <!-- Timeline Range Slider -->
             <div class="filter-section">
                 <h3>Timeline</h3>
@@ -127,6 +123,8 @@
             <div class="filter-count">
                 <span>Showing <strong id="filteredCount">0</strong> of <strong id="totalCount">0</strong> memories</span>
             </div>
+
+            </div><!-- End filter-content -->
 
         </aside>
 

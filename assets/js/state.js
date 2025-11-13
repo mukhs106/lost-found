@@ -18,7 +18,6 @@ const AppState = {
     // Filter state
     filters: {
         selectedThemes: [], // Array of selected theme strings
-        memoryState: 'both', // 'both' | 'lost' | 'found'
         timelineRange: { start: 1990, end: 2024 }, // Year range
         quickJump: null // Currently active preset (if any)
     },
@@ -95,13 +94,6 @@ const AppState = {
             );
         }
 
-        // Filter by memory state
-        if (this.filters.memoryState !== 'both') {
-            filtered = filtered.filter(memory =>
-                memory.memoryState === this.filters.memoryState
-            );
-        }
-
         // Filter by timeline range
         filtered = filtered.filter(memory =>
             memory.year >= this.filters.timelineRange.start &&
@@ -123,7 +115,6 @@ const AppState = {
             filters: {
                 quickJump: presetKey,
                 selectedThemes: preset.themes || [],
-                memoryState: preset.memoryState || 'both',
                 timelineRange: preset.timelineRange || { start: 1990, end: 2024 }
             }
         };
@@ -138,7 +129,6 @@ const AppState = {
         this.update({
             filters: {
                 selectedThemes: [],
-                memoryState: 'both',
                 timelineRange: { start: 1990, end: 2024 },
                 quickJump: null
             }

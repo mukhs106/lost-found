@@ -318,27 +318,21 @@ const MEMORIES = [
 // Quick Jump Preset Definitions
 const QUICK_JUMP_PRESETS = {
     'notes-to-self': {
-        themes: ['notes'],
-        memoryState: 'both'
+        themes: ['notes']
     },
     'small-joys': {
-        themes: ['play'],
-        memoryState: 'found'
+        themes: ['play']
     },
     'heavy-shelf': {
-        themes: ['change', 'limbo'],
-        memoryState: 'both'
+        themes: ['change', 'limbo']
     },
     'before-me': {
-        timelineRange: { start: 1990, end: 2000 },
-        memoryState: 'both'
+        timelineRange: { start: 1990, end: 2000 }
     },
     'recently-found': {
-        memoryState: 'found',
         timelineRange: { start: 2020, end: 2024 }
     },
     'firsts-lasts': {
-        themes: ['change', 'moments'],
-        memoryState: 'both'
+        themes: ['change', 'moments']
     }
 };
