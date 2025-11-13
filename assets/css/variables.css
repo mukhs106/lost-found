@@ -43,8 +43,7 @@
 
     /* === LAYOUT === */
     --header-height: 60px;
-    --filter-panel-width: 240px;
-    --filter-panel-max-height: 75vh;
+    --filter-panel-width: 280px;
 
     /* === TRANSITIONS === */
     --transition-fast: 150ms ease;

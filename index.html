@@ -31,19 +31,18 @@
         </main>
 
         <!-- Fixed Filter Panel (Bottom Right, Collapsible) -->
-        <aside class="filter-panel expanded" id="filterPanel">
+        <aside class="filter-panel" id="filterPanel">
+
+            <!-- Collapse Tab (Protrudes from left edge) -->
+            <button class="filter-collapse-tab" id="filterCollapseTab" aria-label="Toggle filters">
+                <span class="collapse-arrow">‹</span>
+            </button>
 
             <!-- Filter Header -->
             <div class="filter-header">
                 <h2>Filters</h2>
-                <div class="filter-header-actions">
-                    <button class="clear-filters" id="clearFilters">Clear All</button>
-                    <button class="collapse-toggle" id="collapseToggle" aria-label="Collapse filters">−</button>
-                </div>
+                <button class="clear-filters" id="clearFilters">Clear All</button>
             </div>
-
-            <!-- Collapsible Filter Content -->
-            <div class="filter-content" id="filterContent">
 
             <!-- View Mode Toggle -->
             <div class="filter-section">
@@ -123,8 +122,6 @@
             <div class="filter-count">
                 <span>Showing <strong id="filteredCount">0</strong> of <strong id="totalCount">0</strong> memories</span>
             </div>
-
-            </div><!-- End filter-content -->
 
         </aside>
 

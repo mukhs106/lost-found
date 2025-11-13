@@ -7,18 +7,12 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--space-lg);
-    padding: var(--space-lg);
     padding-bottom: var(--space-base);
     border-bottom: var(--border);
 }
 
 .filter-header h2 {
     font-size: var(--font-size-md);
-}
-
-.filter-header-actions {
-    display: flex;
-    gap: var(--space-sm);
 }
 
 .clear-filters {
@@ -30,22 +24,6 @@
 .clear-filters:hover {
     background-color: var(--color-black);
     color: var(--color-white);
-}
-
-.collapse-toggle {
-    font-size: var(--font-size-md);
-    padding: var(--space-xs) var(--space-sm);
-    border: var(--border);
-    min-width: 32px;
-}
-
-.collapse-toggle:hover {
-    background-color: var(--color-black);
-    color: var(--color-white);
-}
-
-.filter-panel.collapsed .collapse-toggle {
-    transform: rotate(90deg);
 }
 
 /* === FILTER SECTIONS === */

@@ -43,7 +43,7 @@ const FilterPanel = {
         this.elements = {
             // Filter panel
             panel: DOM.select('#filterPanel'),
-            collapseToggle: DOM.select('#collapseToggle'),
+            collapseTab: DOM.select('#filterCollapseTab'),
 
             // View toggle
             viewButtons: DOM.selectAll('.view-toggle-btn'),
@@ -73,8 +73,8 @@ const FilterPanel = {
      * Attach event listeners to all filter controls
      */
     attachEventListeners() {
-        // Collapse toggle
-        this.elements.collapseToggle.addEventListener('click', () => {
+        // Collapse tab
+        this.elements.collapseTab.addEventListener('click', () => {
             this.handleToggleCollapse();
         });
 
@@ -120,18 +120,9 @@ const FilterPanel = {
      * Handle collapse toggle
      */
     handleToggleCollapse() {
+        DOM.toggleClass(this.elements.panel, 'collapsed');
         const isCollapsed = this.elements.panel.classList.contains('collapsed');
-        if (isCollapsed) {
-            DOM.removeClass(this.elements.panel, 'collapsed');
-            DOM.addClass(this.elements.panel, 'expanded');
-            this.elements.collapseToggle.textContent = '−';
-            this.elements.collapseToggle.setAttribute('aria-label', 'Collapse filters');
-        } else {
-            DOM.removeClass(this.elements.panel, 'expanded');
-            DOM.addClass(this.elements.panel, 'collapsed');
-            this.elements.collapseToggle.textContent = '+';
-            this.elements.collapseToggle.setAttribute('aria-label', 'Expand filters');
-        }
+        this.elements.collapseTab.setAttribute('aria-label', isCollapsed ? 'Expand filters' : 'Collapse filters');
     },
 
     /**

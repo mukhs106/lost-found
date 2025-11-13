@@ -61,7 +61,15 @@
     width: 100%;
     height: 100%;
     position: relative;
-    overflow: hidden;
+    overflow: auto; /* Allow scrolling */
+
+    /* Hide scrollbars while maintaining functionality */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.view-container::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Opera */
 }
 
 /* === FILTER PANEL (Bottom Right, Fixed) === */
@@ -70,43 +78,65 @@
     grid-area: filter;
     border-left: var(--border);
     background-color: var(--color-bg);
-    padding: 0;
-    overflow: visible;
-    max-height: calc(100vh - var(--header-height));
+    padding: var(--space-lg);
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
     z-index: var(--z-filter-panel);
-    transition: width var(--transition-base);
+    transition: transform var(--transition-smooth);
 }
 
 .filter-panel.collapsed {
-    width: 60px;
+    transform: translateX(100%);
 }
 
-.filter-panel.collapsed .filter-content {
-    display: none;
-}
-
-.filter-content {
-    padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: var(--filter-panel-max-height);
-}
-
-/* Custom scrollbar for filter content */
-.filter-content::-webkit-scrollbar {
+/* Custom scrollbar for filter panel */
+.filter-panel::-webkit-scrollbar {
     width: 4px;
 }
 
-.filter-content::-webkit-scrollbar-track {
+.filter-panel::-webkit-scrollbar-track {
     background: var(--color-gray-lightest);
 }
 
-.filter-content::-webkit-scrollbar-thumb {
+.filter-panel::-webkit-scrollbar-thumb {
     background: var(--color-gray-light);
 }
 
-.filter-content::-webkit-scrollbar-thumb:hover {
+.filter-panel::-webkit-scrollbar-thumb:hover {
     background: var(--color-gray);
+}
+
+/* Collapse Tab - Protrudes from left edge */
+.filter-collapse-tab {
+    position: absolute;
+    left: -32px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 64px;
+    background-color: var(--color-bg);
+    border: var(--border);
+    border-right: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1;
+    transition: background-color var(--transition-fast);
+}
+
+.filter-collapse-tab:hover {
+    background-color: var(--color-gray-lightest);
+}
+
+.collapse-arrow {
+    font-size: 20px;
+    transition: transform var(--transition-base);
+}
+
+.filter-panel.collapsed .collapse-arrow {
+    transform: rotate(180deg);
 }
 
 /* === MODALS === */
