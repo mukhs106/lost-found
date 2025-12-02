@@ -1,0 +1,148 @@
+/* Clinical Grid View */
+.grid-view {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.grid-tile {
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  transform-origin: center;
+}
+
+.grid-tile:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.grid-tile img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  background: #f5f5f5;
+  display: block;
+}
+
+.grid-tile-info {
+  padding: 12px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-top: none;
+}
+
+.grid-tile .title {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.grid-tile .year {
+  font-size: 10px;
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+
+.grid-tile .compliance {
+  font-size: 11px;
+}
+
+/* Evolutionary Timeline View */
+.timeline-view {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.timeline-canvas {
+  position: relative;
+  width: max-content;
+  height: 560px;
+  min-width: 100%;
+}
+
+.timeline-image {
+  position: absolute;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.timeline-image:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.timeline-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 2px solid var(--color-bg);
+}
+
+/* Thematic Constellation View */
+.constellation-view {
+  position: relative;
+  width: 100%;
+  height: 800px;
+  overflow: hidden;
+}
+
+.constellation-canvas {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.constellation-image {
+  position: absolute;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.constellation-image:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.constellation-image img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.theme-label {
+  position: absolute;
+  font-size: 10px;
+  opacity: 0.3;
+  pointer-events: none;
+  text-transform: lowercase;
+}
+
+/* Responsive Grid */
+@media (max-width: 1200px) {
+  .grid-view {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-view {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .grid-tile img {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-view {
+    grid-template-columns: 1fr;
+  }
+}

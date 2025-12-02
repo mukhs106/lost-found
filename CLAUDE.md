@@ -1,74 +1,102 @@
 # CLAUDE.md - AI Assistant Development Guide
 
 **Last Updated**: December 2, 2025
-**Project**: Lost & Found: An Atlas of Being
-**Tech Stack**: Vanilla HTML/CSS/JavaScript (No frameworks)
+**Project**: Lost—Found: A Personal Archive
+**Type**: Thesis Project - Interactive Digital Archive
+**Tech Stack**: Pure Vanilla HTML/CSS/JavaScript (No frameworks)
 
 ---
 
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
-2. [Architecture](#architecture)
-3. [Codebase Structure](#codebase-structure)
-4. [Key Conventions](#key-conventions)
-5. [State Management](#state-management)
-6. [View System](#view-system)
-7. [Component System](#component-system)
-8. [Data Structure](#data-structure)
+2. [Conceptual Framework](#conceptual-framework)
+3. [Architecture](#architecture)
+4. [Codebase Structure](#codebase-structure)
+5. [Key Conventions](#key-conventions)
+6. [Data Structure](#data-structure)
+7. [View System](#view-system)
+8. [Filter System](#filter-system)
 9. [Styling & Design System](#styling--design-system)
-10. [Development Workflow](#development-workflow)
-11. [Common Tasks](#common-tasks)
-12. [Performance Considerations](#performance-considerations)
+10. [Common Tasks](#common-tasks)
 
 ---
 
 ## Project Overview
 
-**Lost & Found** is an intimate, explorable digital archive that transforms personal photographs and written reflections into an interactive visualization spanning 1990-2024. It's a minimalist, poetic web-based archive with no build process, no dependencies, and no frameworks.
+**Lost—Found** is a thesis project examining personal branding and identity construction through Alice Marwick's self-branding theory. It transforms 112 personal photographs (1990-2025) into an interactive digital archive.
 
-### Core Philosophy
-- **Pure vanilla JavaScript** - Maximum control, zero dependencies
-- **Minimalism as contemplation** - Remove unnecessary elements
-- **60fps performance** - GPU-accelerated animations
-- **Grayscale aesthetic** - Courier New typography throughout
-- **Responsive design** - Desktop, tablet, mobile support
+### Purpose
 
-### Two Navigation Modes
-1. **Drift View** - Wandering through scattered memories with momentum-based panning/zooming
-2. **Descent View** - Layered rings of memory in a perspective cone with rotation/zoom
+- **Analytical tool** for examining personal images against brand guidelines
+- **Performance record** of identity construction over time
+- **Self-reflection invitation** about authenticity vs. performance
+- **Data visualization** where contradictions illuminate complexity
+
+### Critical Principle
+
+**Contradictions are valuable data, not errors.** Images scoring below 50% are highlighted as contradictions - the most honest documentation of tension between brand and humanity.
+
+### Technical Philosophy
+
+- **Pure vanilla JavaScript** - Zero dependencies
+- **No build process** - Open index.html in browser
+- **Extensively documented** - For non-technical audiences
+- **Minimalist aesthetic** - Black on white, clean design
+
+---
+
+## Conceptual Framework
+
+### Self-Branding Scoring (Alice Marwick)
+
+1. **Visual Identity** (40%) - Color palette, composition, lighting
+2. **Behavioral Alignment** (30%) - Authenticity vs. performance, rituals
+3. **Voice/Audience Alignment** (30%) - Audience context, vulnerability
+
+**Overall Score** = Weighted average (0-100%)
+
+### Compliance Levels
+
+- **High (75-100%)**: Strong brand adherence
+- **Medium (50-74%)**: Adequate alignment
+- **Low (25-49%)**: Significant contradiction
+- **Deviant (0-24%)**: Complete violation
+- **Pre-guideline (null)**: Before guidelines existed (pre-2016)
+
+### Three Viewing Modes
+
+1. **Clinical Grid** - Objective 4-column grid display
+2. **Evolutionary Timeline** - Year (x-axis) × Compliance (y-axis)
+3. **Thematic Constellation** - Force-directed clustering by themes
 
 ---
 
 ## Architecture
 
 ### Application Flow
+
 ```
-index.html (Entry Point)
+index.html (Landing) → archive.html (Main app)
     ↓
-main.js (App Orchestrator)
+app.js (Orchestrator)
     ↓
-├── state.js (Single Source of Truth)
-├── data.js (Memory Collection)
-├── components/ (UI Components)
-│   ├── filterPanel.js
-│   ├── infoModal.js
-│   └── imageDetail.js
-├── views/ (Render Modes)
-│   ├── drift.js
-│   └── descent.js
-└── utils/ (Helpers)
-    ├── dom.js
-    ├── math.js
-    └── images.js
+├── data.js (112 image entries)
+├── utils.js (Helpers)
+├── filters.js (State & logic)
+├── modal.js (Detail view)
+└── views/
+    ├── grid.js
+    ├── timeline.js
+    └── constellation.js
 ```
 
 ### Key Principles
-1. **No build process** - Just open `index.html` in a browser
-2. **Global namespace pattern** - Each file exports one object (e.g., `AppState`, `DriftView`)
-3. **Event-driven architecture** - State changes trigger re-renders
-4. **Separation of concerns** - Views handle rendering, components handle UI, state handles data
-5. **Functional utilities** - Pure functions in `utils/`
+
+1. **No module system** - Files load via `<script>` tags in order
+2. **Global namespace** - Each file exports functions/objects
+3. **Event-driven** - Filter changes trigger re-renders
+4. **Separation of concerns** - Views render, filters manage state
 
 ---
 
@@ -76,872 +104,377 @@ main.js (App Orchestrator)
 
 ```
 lost-found/
-├── index.html                 # Main entry point (203 lines)
-├── README.md                  # User-facing documentation
-├── CLAUDE.md                  # This file (AI assistant guide)
+├── index.html                 # Landing page
+├── archive.html               # Main archive interface
+├── CLAUDE.md                  # This file
 │
-├── assets/
-│   ├── css/
-│   │   ├── reset.css         # CSS reset (normalize browser defaults)
-│   │   ├── variables.css     # Design tokens (colors, spacing, typography)
-│   │   ├── base.css          # Global typography and base styles
-│   │   ├── layout.css        # Grid-based layout system
-│   │   ├── components.css    # Component-specific styles
-│   │   └── responsive.css    # Media queries for mobile/tablet
-│   │
-│   ├── js/
-│   │   ├── main.js           # App initialization and orchestration (93 lines)
-│   │   ├── data.js           # Memory collection (30 entries, 339 lines)
-│   │   ├── state.js          # Centralized state management (159 lines)
-│   │   │
-│   │   ├── utils/
-│   │   │   ├── dom.js        # DOM manipulation helpers
-│   │   │   ├── math.js       # Math/physics utilities (distance, random, clamp)
-│   │   │   └── images.js     # Image loading utilities
-│   │   │
-│   │   ├── components/
-│   │   │   ├── filterPanel.js    # Filter UI and logic (237 lines)
-│   │   │   ├── infoModal.js      # Information modal (91 lines)
-│   │   │   └── imageDetail.js    # Image detail view (188 lines)
-│   │   │
-│   │   └── views/
-│   │       ├── drift.js      # Drift view with gravity wells (422 lines)
-│   │       └── descent.js    # Descent view with perspective (398 lines)
-│   │
-│   └── images/
-│       └── image001-030.svg  # 30 placeholder SVG images
+├── css/
+│   ├── reset.css             # Browser normalization
+│   ├── typography.css        # Font styles
+│   ├── layout.css            # Grid, panels, responsive
+│   ├── components.css        # Modal, info panel
+│   └── views.css             # Grid, timeline, constellation
+│
+├── js/
+│   ├── data.js               # 112 image entries
+│   ├── utils.js              # Helper functions
+│   ├── filters.js            # Filter state & logic
+│   ├── modal.js              # Image detail modal
+│   ├── app.js                # Initialization & orchestration
+│   └── views/
+│       ├── grid.js           # Clinical grid renderer
+│       ├── timeline.js       # Timeline renderer
+│       └── constellation.js  # Constellation renderer
+│
+└── images/
+    ├── 2025/ ... 1990/       # Images by year
 ```
 
-### File Loading Order (Critical)
-The order in `index.html` matters because there's no module system:
+### Critical: File Loading Order
 
 ```html
-<!-- CSS Files -->
-<link rel="stylesheet" href="assets/css/reset.css">
-<link rel="stylesheet" href="assets/css/variables.css">
-<link rel="stylesheet" href="assets/css/base.css">
-<link rel="stylesheet" href="assets/css/layout.css">
-<link rel="stylesheet" href="assets/css/components.css">
-<link rel="stylesheet" href="assets/css/responsive.css">
-
-<!-- JavaScript Files -->
-<script src="assets/js/data.js"></script>           <!-- Must load first (MEMORIES, QUICK_JUMP_PRESETS) -->
-<script src="assets/js/state.js"></script>          <!-- Depends on data.js -->
-<script src="assets/js/utils/dom.js"></script>
-<script src="assets/js/utils/math.js"></script>
-<script src="assets/js/utils/images.js"></script>
-<script src="assets/js/components/filterPanel.js"></script>
-<script src="assets/js/components/infoModal.js"></script>
-<script src="assets/js/components/imageDetail.js"></script>
-<script src="assets/js/views/drift.js"></script>
-<script src="assets/js/views/descent.js"></script>
-<script src="assets/js/main.js"></script>           <!-- Must load last (orchestrates everything) -->
+<script src="js/data.js"></script>           <!-- FIRST -->
+<script src="js/utils.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/views/grid.js"></script>
+<script src="js/views/timeline.js"></script>
+<script src="js/views/constellation.js"></script>
+<script src="js/app.js"></script>            <!-- LAST -->
 ```
 
-**IMPORTANT**: Never change this order without understanding dependencies.
+**Changing order will break the app** (no module system).
 
 ---
 
 ## Key Conventions
 
-### 1. Global Namespace Pattern
-Each JavaScript file exports exactly one object to the global scope:
+### Naming
 
-```javascript
-// state.js
-const AppState = {
-    viewMode: 'drift',
-    filters: { /* ... */ },
-    // ...
-};
+- **Variables**: `camelCase` (`currentView`, `filterState`)
+- **Functions**: `camelCase` (`renderGrid`, `openModal`)
+- **CSS Variables**: `--kebab-case` (`--color-text`)
+- **DOM IDs/Classes**: `kebab-case` (`filter-panel`, `grid-view`)
 
-// drift.js
-const DriftView = {
-    init() { /* ... */ },
-    render() { /* ... */ },
-    destroy() { /* ... */ }
-};
-```
+### Documentation Style
 
-### 2. Naming Conventions
-- **Constants**: `SCREAMING_SNAKE_CASE` (e.g., `MEMORIES`, `QUICK_JUMP_PRESETS`)
-- **Objects**: `PascalCase` (e.g., `AppState`, `DriftView`, `FilterPanel`)
-- **Functions/Methods**: `camelCase` (e.g., `init`, `render`, `onStateChange`)
-- **CSS Variables**: `--kebab-case` (e.g., `--color-gray`, `--space-lg`)
-- **DOM IDs**: `camelCase` (e.g., `viewContainer`, `filterPanel`)
-- **Data Attributes**: `data-kebab-case` (e.g., `data-view="drift"`, `data-preset="notes-to-self"`)
-
-### 3. File Conventions
-- **One concern per file** - Each file handles one thing
-- **Comprehensive JSDoc comments** - Every file starts with a comment block
-- **Console logging** - Use `console.log('[ModuleName] Message')` for debugging
-- **No side effects on load** - Files define objects but don't execute (except `state.js` auto-initializes)
-
-### 4. Comment Style
 ```javascript
 /**
- * FILENAME.JS - Brief Description
- *
- * Longer explanation of what this file does,
- * key features, and important notes.
+ * PURPOSE: What this does and why
+ * HOW: Brief logic explanation
+ * INPUT: parameter (type) - description
+ * OUTPUT: What it returns/produces
  */
-
-/**
- * Function description
- * @param {Type} paramName - Description
- * @returns {Type} Description
- */
-```
-
-### 5. Code Organization
-Each module follows this pattern:
-```javascript
-const ModuleName = {
-    // State/properties
-    someState: null,
-
-    // Initialization
-    init() { /* ... */ },
-
-    // Public methods
-    publicMethod() { /* ... */ },
-
-    // Private/internal methods
-    _internalMethod() { /* ... */ },
-
-    // Event handlers
-    onEventName() { /* ... */ },
-
-    // Cleanup
-    destroy() { /* ... */ }
-};
-```
-
----
-
-## State Management
-
-### Centralized State (`state.js`)
-All application state lives in `AppState` object - single source of truth.
-
-```javascript
-const AppState = {
-    viewMode: 'drift',              // 'drift' | 'descent'
-    filters: {
-        selectedThemes: [],         // Array of theme strings
-        timelineRange: {            // Year range
-            start: 1990,
-            end: 2024
-        },
-        quickJump: null             // Active preset key or null
-    },
-    ui: {
-        selectedImageId: null,      // Currently selected image ID
-        isInfoModalOpen: false,
-        isDetailModalOpen: false
-    },
-    filteredImages: []              // Computed based on filters
-};
-```
-
-### State Updates (Reactive Pattern)
-Components subscribe to state changes:
-
-```javascript
-// Subscribe to changes
-AppState.subscribe((state) => {
-    // React to state changes
-    console.log('State changed:', state);
-});
-
-// Update state (triggers notifications)
-AppState.update({
-    viewMode: 'descent',
-    filters: {
-        selectedThemes: ['notes', 'moments']
-    }
-});
-```
-
-### Key Methods
-- `AppState.subscribe(callback)` - Subscribe to state changes, returns unsubscribe function
-- `AppState.update(updates)` - Update state and notify subscribers
-- `AppState.computeFilteredImages()` - Recompute filtered images based on current filters
-- `AppState.applyQuickJump(presetKey)` - Apply a preset filter combination
-- `AppState.clearFilters()` - Reset all filters to defaults
-- `AppState.getMemoryById(id)` - Get memory object by ID
-
-### Filter Logic
-- **Themes**: OR logic - match ANY selected theme
-- **Timeline**: Inclusive range - `year >= start && year <= end`
-- **Quick Jump**: Preset combinations of themes/timeline
-- **Memory State**: Removed in recent update (all memories shown)
-
----
-
-## View System
-
-Views handle rendering the main canvas area. Only one view is active at a time.
-
-### View Lifecycle
-```javascript
-// View interface (both Drift and Descent implement this)
-{
-    init()      // Initialize view, create DOM, attach listeners
-    render()    // Render/update based on AppState.filteredImages
-    destroy()   // Cleanup: remove DOM, cancel animations, detach listeners
+function exampleFunction(parameter) {
+  // Implementation
 }
 ```
 
-### View Switching
-Handled by `App.switchView()` in `main.js`:
-1. Destroy current view (cleanup)
-2. Initialize new view
-3. New view renders based on current state
+### Console Logging
 
-### Drift View (`drift.js`)
-**Features**:
-- 5x viewport size canvas (infinite scroll feel)
-- 8-12 gravity wells (attraction points)
-- 90% of images cluster around wells
-- 10% wander freely (not clustered)
-- Momentum/inertia physics on drag
-- Controlled overlap (minimum spacing)
-- 60fps performance via `requestAnimationFrame`
-
-**Key Implementation Details**:
-```javascript
-const DriftView = {
-    gravityWells: [],           // Array of {x, y, strength, radius}
-    velocityX: 0,               // Momentum tracking
-    velocityY: 0,
-    momentumRAF: null,          // Animation frame ID
-
-    generateGravityWells()      // Create 8-12 random wells
-    positionImages()            // Place images with gravity + controlled overlap
-    attachEventListeners()      // Drag, momentum, image clicks
-    applyMomentum()            // requestAnimationFrame loop for inertia
-};
-```
-
-**Physics Parameters**:
-- Canvas: `window.innerWidth * 5` x `window.innerHeight * 5`
-- Gravity wells: 8-12, min 400px apart
-- Image size: 80px
-- Min spacing: 20px between images
-- Friction: 0.95 (momentum decay)
-- Hover scale: 1.2x
-
-### Descent View (`descent.js`)
-**Features**:
-- Perspective cone layout (concentric rings)
-- Outer rings = recent/surface memories
-- Inner rings = deeper/older memories
-- Uniform 80px image sizing (depth via position, not size)
-- Horizontal drag = rotate 360°
-- Vertical drag = zoom in/out (0.5x to 3x)
-- Mouse wheel = alternative zoom
-- Z-index depth management (inner rings on top)
-- Touch support
-
-**Key Implementation Details**:
-```javascript
-const DescentView = {
-    rotation: 0,                // Current rotation angle
-    zoom: 1.0,                  // Current zoom level (0.5 - 3.0)
-    rotationVelocity: 0,        // Rotation momentum
-    rotationRAF: null,          // Animation frame ID
-
-    positionImages()            // Distribute images across rings
-    attachEventListeners()      // Drag, zoom, rotation
-    applyRotation()            // Update transform during animation
-};
-```
-
-**Layout Parameters**:
-- Ring count: Based on image count (max 6 rings)
-- Image size: Uniform 80px (all rings)
-- Angle offset: ±0.1 radians (organic feel)
-- Radius offset: ±10px
-- Zoom range: 0.5x to 3x
-- Friction: 0.95
-
----
-
-## Component System
-
-Components manage discrete UI elements and their behavior.
-
-### Component Lifecycle
-```javascript
-{
-    init()      // Initialize component, attach event listeners
-    open()      // Open modal/panel (if applicable)
-    close()     // Close modal/panel (if applicable)
-    destroy()   // Cleanup (rarely used, components persist)
-}
-```
-
-### Filter Panel (`filterPanel.js`)
-**Location**: Bottom-right, collapsible
-**Features**:
-- View mode toggle (Drift/Descent)
-- Theme checkboxes (8 themes)
-- Timeline range sliders (dual slider, 1990-2024)
-- Quick Jump presets (6 buttons)
-- Filter count display
-- Collapse/expand with tab
-- Clear all filters
-
-**Key Methods**:
-```javascript
-FilterPanel.init()                  // Attach all event listeners
-FilterPanel.updateFilterCount()     // Update "Showing X of Y" display
-FilterPanel.syncWithState()         // Sync UI with AppState (after quick jump)
-```
-
-**Event Flow**:
-1. User interacts with filter UI
-2. Component updates `AppState` via `AppState.update()`
-3. State change triggers notification
-4. All subscribed components react
-
-### Info Modal (`infoModal.js`)
-**Trigger**: "i" button in header
-**Content**: Project description, navigation instructions
-**Features**:
-- Overlay + centered modal
-- Close via X button, overlay click, or Escape key
-- Prevents body scroll when open
-
-### Image Detail Modal (`imageDetail.js`)
-**Trigger**: Click on any image
-**Size**: 50-60% screen size
-**Layout**: Split (image left, metadata right)
-**Content**:
-- Large image preview
-- Title, year, memory state
-- Theme tags
-- Entry text (reflection)
-- Note content (if applicable, for "notes" theme)
-
-**Key Method**:
-```javascript
-ImageDetail.openWithId(imageId)     // Open modal with specific memory
-```
+Use for debugging: `console.log('Lost—Found:', value);`
 
 ---
 
 ## Data Structure
 
-### Memory Object Schema
+### Image Object Schema
+
 ```javascript
 {
-    id: 1,                          // Unique identifier (Number)
-    title: "Memory Title",          // Display title (String)
-    filename: "image001.svg",       // Filename in assets/images/ (String)
-    year: 1990,                     // Year (Number, 1990-2024)
-    themes: ["moments", "play"],    // 1-3 themes (Array of Strings)
-    entry: "Brief reflection...",   // Poetic description (String)
-    memoryState: "found",           // "lost" | "found" (String)
-    noteContent: null               // Long-form text or null (String | null)
+  // Basic
+  id: "img_001",
+  src: "images/2023/filename.jpg",
+  title: "Image Title",
+  year: 2023,
+  date: "2023-03-15",
+  aspect_ratio: "2:3",  // "1:1", "3:2", "2:3", "16:9", "9:16"
+
+  // Thematic
+  thematic: {
+    categories: ["moments", "belonging"],     // 1-3 themes
+    emotional_tags: ["routine"],
+    lost_found: "found",                      // "lost" | "found"
+    thematic_weights: { moments: 0.6, belonging: 0.4 }  // Must sum to 1.0
+  },
+
+  // Brand Compliance
+  brand_compliance: {
+    overall_score: 0.87,                      // 0-1 or null
+    visual_identity: {
+      score: 0.90,
+      color_palette: "compliant",             // "compliant" | "deviant" | "n/a"
+      composition: "strong",
+      lighting: "signature"
+    },
+    ritual_behavioral: {
+      score: 0.85,
+      authenticity: 0.75,
+      ritual_documentation: 1.0,
+      ritual_name: "Morning Protocol",
+      performance_type: "ambiguous"           // "authentic" | "performed" | "ambiguous"
+    },
+    voice_audience: {
+      score: 0.85,
+      audience: "solitude",                   // See audience options
+      audience_match: 1.0,
+      vulnerability_tone: "aligned",
+      tone_score: 0.70
+    }
+  },
+
+  // Context
+  context: {
+    location_type: "private",
+    photographer: "self",
+    intention: "documentation"
+  },
+
+  // Additional
+  notes: "Personal reflection...",
+  contradictions: ["Visual: ...", "Behavioral: ..."],  // Array or null
+  position: null,                             // Calculated for constellation
+  color_palette: ["#2B4C5F"],
+  visual_similarity_ids: ["img_034"]
 }
 ```
 
-### Available Themes
+### Thematic Categories (8)
+
+- **notes**: observations, fragments
+- **moments**: fleeting captures
+- **faces**: portraits, identity work
+- **nostalgia**: memory, longing
+- **play**: joy, experimentation
+- **belonging**: connection, home
+- **change**: transformation
+- **limbo**: in-between states
+
+### Audience Options
+
+- solitude, intimate_circle, trusted_few, familial, extended_network, public
+
+### Performance Types
+
+- authentic, performed, ambiguous
+
+---
+
+## View System
+
+### Clinical Grid (`grid.js`)
+
+**Layout**: Responsive grid
+- 4 columns (desktop 1200px+)
+- 3 columns (tablet 768-1199px)
+- 2 columns (mobile 480-767px)
+- 1 column (<480px)
+
+**Display**: Thumbnail (300px tall), title, year, compliance dots
+
+**Interaction**: Hover scale 1.05, click opens modal
+
+### Evolutionary Timeline (`timeline.js`)
+
+**Layout**: Horizontal scrollable canvas
+- X-axis: Year (left to right)
+- Y-axis: Compliance (high at top, inverted)
+- Canvas: Adaptive width (min 1200px), 560px height
+
+**Display**: 80×80px thumbnails
+
+**Positioning**:
 ```javascript
-"notes"      // Written reflections, textual memory
-"moments"    // Captured instants, temporal markers
-"faces"      // Portraits of self and others
-"nostalgia"  // Longing for past selves and places
-"play"       // Joy, spontaneity, lightness
-"belonging"  // Connection to place, people, purpose
-"change"     // Transformation, transition, evolution
-"limbo"      // In-between states, uncertainty, waiting
+x = (year - minYear) / yearRange * canvasWidth
+y = (1 - complianceScore) * canvasHeight  // Inverted
+// Pre-guideline (null) → middle
 ```
 
-### Quick Jump Presets
+### Thematic Constellation (`constellation.js`)
+
+**Layout**: Fixed 800px height canvas
+
+**Theme Anchors**:
 ```javascript
-const QUICK_JUMP_PRESETS = {
-    'notes-to-self': {
-        themes: ['notes']
-    },
-    'small-joys': {
-        themes: ['play']
-    },
-    'heavy-shelf': {
-        themes: ['change', 'limbo']
-    },
-    'before-me': {
-        timelineRange: { start: 1990, end: 2000 }
-    },
-    'recently-found': {
-        timelineRange: { start: 2020, end: 2024 }
-    },
-    'firsts-lasts': {
-        themes: ['change', 'moments']
-    }
+notes: {200, 300}, moments: {600, 300}, faces: {400, 100}
+nostalgia: {200, 500}, play: {600, 500}, belonging: {800, 300}
+change: {400, 500}, limbo: {400, 700}
+```
+
+**Positioning**: Weighted average of theme positions + randomness
+
+**Opacity**: High (1.0), Medium (0.85), Low/Deviant (0.6)
+
+---
+
+## Filter System
+
+### Filter State
+
+```javascript
+const filterState = {
+  thematic: [],                          // Selected themes
+  timeRange: { start: 1990, end: 2025 },
+  compliance: "all",                     // "all"|"high"|"medium"|"low"|"deviant"
+  performance: [],
+  audience: []
 };
 ```
 
-### Adding New Memories
-1. Add SVG file to `assets/images/` (e.g., `image031.svg`)
-2. Add entry to `MEMORIES` array in `data.js`
-3. Ensure `id` is unique and sequential
-4. Choose 1-3 themes
-5. If theme includes "notes", provide `noteContent`
-6. Set `memoryState` to "lost" or "found"
-7. Refresh page - no build step needed
+### Filter Logic
+
+1. **Thematic**: OR logic (match ANY)
+2. **Time**: Inclusive range
+3. **Compliance**: Only if score exists
+4. **Performance/Audience**: Match selected
+
+### Update Flow
+
+1. User interacts → Event listener
+2. Call `updateFilter(type, value, isChecked)`
+3. Update `filterState`
+4. Call `filterImages(imageData, filterState)`
+5. Call `renderCurrentView(filtered)`
+6. Update count
 
 ---
 
 ## Styling & Design System
 
-### Design Tokens (`variables.css`)
-All design values are centralized in CSS custom properties:
+### Design Tokens
 
 ```css
-/* Colors (Grayscale only) */
---color-black: #000000;
---color-gray-darkest: #1a1a1a;
---color-gray-darker: #333333;
---color-gray-dark: #4d4d4d;
---color-gray: #666666;
---color-gray-medium: #999999;
---color-gray-light: #cccccc;
---color-gray-lighter: #e6e6e6;
---color-gray-lightest: #f5f5f5;
---color-white: #ffffff;
-
-/* Typography */
---font-family: 'Courier New', Courier, monospace;
---font-size-xs: 10px;
---font-size-sm: 12px;
---font-size-base: 14px;
---font-size-md: 16px;
---font-size-lg: 18px;
---font-size-xl: 24px;
-
-/* Spacing */
---space-xs: 4px;
---space-sm: 8px;
---space-md: 12px;
---space-base: 16px;
---space-lg: 24px;
---space-xl: 32px;
---space-xxl: 48px;
-
-/* Layout */
---header-height: 60px;
---filter-panel-width: 280px;
-
-/* Transitions */
---transition-fast: 150ms ease;
---transition-base: 250ms ease;
---transition-slow: 400ms ease;
-
-/* Z-Index */
---z-canvas: 1;
---z-header: 10;
---z-filter-panel: 10;
---z-modal-overlay: 100;
---z-modal-content: 101;
+--color-text: #1a1a1a;
+--color-bg: #ffffff;
+--color-panel: #fafafa;
+--color-border: #e0e0e0;
+--color-accent-blue: #2B4C5F;
+--color-accent-green: #3A5A40;
+--color-accent-brown: #5C4742;
 ```
 
-### CSS Architecture
-1. **reset.css** - Normalize browser defaults
-2. **variables.css** - Design tokens (use these, never hardcode values)
-3. **base.css** - Global typography, html/body styles
-4. **layout.css** - Grid system, header, main, aside positioning
-5. **components.css** - Component-specific styles (modals, buttons, etc.)
-6. **responsive.css** - Media queries for tablet/mobile
+### Typography
 
-### Key Design Rules
-- **Grayscale only** - No colors besides black/white/gray
-- **Courier New everywhere** - Monospace font for all text
-- **Generous whitespace** - Don't crowd elements
-- **Subtle shadows** - Minimal, only where needed
-- **Smooth transitions** - Use CSS variables for consistency
-- **Mobile-first responsive** - Stack on mobile, side-by-side on desktop
+- **Font**: Arial Narrow, Arial, sans-serif
+- **Base**: 12px, line-height 1.5
+- **Sizes**: 10px (small), 12px (body), 14px (title), 16px (modal), 18px (headings)
 
-### Grid Layout
-```
-┌─────────────────────────────────────────┐
-│          Header (Fixed)                 │
-├─────────────────────────────────────────┤
-│                                         │
-│     Canvas Area                         │
-│     (Drift or Descent View)       ┌─────┤
-│                                   │     │
-│                                   │  F  │
-│                                   │  i  │
-│                                   │  l  │
-│                                   │  t  │
-│                                   │  e  │
-│                                   │  r  │
-│                                   │     │
-└───────────────────────────────────┴─────┘
-```
+### Key Rules
 
----
-
-## Development Workflow
-
-### Local Development
-No build process required. Just open `index.html` in a browser.
-
-**Recommended Local Server** (for better file loading):
-```bash
-# Python 3
-python -m http.server 8000
-
-# Node.js
-npx http-server -p 8000
-
-# VS Code
-# Install "Live Server" extension
-# Right-click index.html → "Open with Live Server"
-```
-
-Navigate to `http://localhost:8000`
-
-### Git Workflow
-This repository uses **feature branches** with a specific naming convention:
-
-**Branch Pattern**: `claude/<description>-<session-id>`
-
-**Current Branch**: `claude/claude-md-mip2436o7cb93s2l-018DRpchDyaBjC9fDymxcTT9`
-
-**Commit Message Style**:
-- Use imperative mood ("Add feature", not "Added feature")
-- First line: Brief summary (50-72 chars)
-- If needed, add detailed description after blank line
-- Reference phase/feature in commits (e.g., "Phase 6: Complete Descent View...")
-
-**Example Commits**:
-```
-Phase 5: Complete Drift View with gravity wells, momentum, and controlled overlap
-Fix filter panel: proper collapse mechanism, correct dimensions, hide scrollbars
-Implement user feedback: collapsible filters, infinite scroll, remove memory state
-```
-
-### Development Phases
-- [x] **Phase 1-4**: Foundation (HTML/CSS, data, state, filters, modals)
-- [x] **Phase 5**: Drift View (full implementation)
-- [x] **Phase 6**: Descent View (full implementation)
-- [ ] **Phase 7**: Polish & refinement
-- [ ] **Phase 8**: Content population (real images/text)
-- [ ] **Phase 9**: Final testing & launch
-
-### Browser Testing
-Test in:
-- Chrome/Edge (primary target)
-- Firefox
-- Safari (especially for transforms/animations)
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-**Performance Targets**:
-- 60fps on desktop
-- 30fps minimum on mobile
-- <3 seconds initial load
-- <1 second filter response
+1. Grayscale only (except accent indicators)
+2. Minimal decoration
+3. Generous whitespace
+4. Subtle interactions (150ms transitions)
+5. Responsive mobile-first
 
 ---
 
 ## Common Tasks
 
-### Adding a New Memory
-1. **Create SVG image** in `assets/images/image031.svg`
-2. **Add entry to `data.js`**:
-   ```javascript
-   {
-       id: 31,
-       title: "Your Memory Title",
-       filename: "image031.svg",
-       year: 2024,
-       themes: ["moments", "play"],
-       entry: "Brief poetic reflection on this memory.",
-       memoryState: "found",
-       noteContent: null
-   }
-   ```
-3. **Refresh page** - Memory appears automatically
+### Adding an Image Entry
 
-### Adding a New Theme
-1. **Add to `data.js`** theme list (in comment)
-2. **Add checkbox to `index.html`** in theme grid:
-   ```html
-   <label class="checkbox-label">
-       <input type="checkbox" name="theme" value="new-theme">
-       <span>new-theme</span>
-   </label>
-   ```
-3. **No JavaScript changes needed** - FilterPanel auto-detects
+1. Add image file to `images/YEAR/filename.jpg`
+2. Add entry to `imageData` array in `data.js` (follow schema)
+3. Ensure `thematic_weights` sum to 1.0
+4. Refresh page
 
-### Adding a New Quick Jump Preset
-1. **Add to `QUICK_JUMP_PRESETS` in `data.js`**:
-   ```javascript
-   'preset-key': {
-       themes: ['theme1', 'theme2'],
-       timelineRange: { start: 2000, end: 2010 }
-   }
-   ```
-2. **Add button to `index.html`**:
-   ```html
-   <button class="quick-jump-btn" data-preset="preset-key">
-       Preset Name
-   </button>
-   ```
-3. **FilterPanel auto-wires** event listeners
+### Expanding to 112 Images
 
-### Modifying View Behavior
-1. **Locate view file** (`drift.js` or `descent.js`)
-2. **Read JSDoc comments** to understand current logic
-3. **Modify parameters** (e.g., gravity well count, zoom range)
-4. **Test in browser** - changes apply on refresh
-5. **Check console logs** for debugging info
+**Current**: 3 sample entries
+**Needed**: 109 more entries
 
-### Changing Design Tokens
-1. **Edit `variables.css`** - Never hardcode values
-2. **Example**:
-   ```css
-   --color-gray: #666666;  /* Change to #555555 */
-   --space-lg: 24px;       /* Change to 32px */
-   ```
-3. **Changes propagate globally** - All components update
+**Tips**:
+- Mix compliance levels (~30% high, ~30% medium, ~20% low, ~10% deviant, ~10% pre-guideline)
+- Use all 8 themes
+- Vary audiences, performance types, aspect ratios
+- Add meaningful contradictions for low scores
+- Add personal notes for authenticity
+
+### Modifying a View
+
+1. Open view file (`grid.js`, `timeline.js`, `constellation.js`)
+2. Read function documentation
+3. Modify rendering logic
+4. Test in browser (refresh)
 
 ### Debugging
-**Console Logging Pattern**:
+
 ```javascript
-console.log('[ModuleName] Event description', data);
+// Check data loaded
+console.log(imageData.length);  // Should be 112
+
+// Check filter state
+console.log(filterState);
+
+// Check filtered results
+console.log(currentImages.length);
+
+// Test constellation positions
+calculateConstellationPositions(imageData);
+console.log(imageData[0].position);
 ```
-
-**Check these logs**:
-- `[App] Initialization complete` - App started
-- `[State] Initialized with X total memories` - Data loaded
-- `[DriftView] Initialized with X gravity wells` - View ready
-- `[FilterPanel] Filter changed:` - Filter updates
-
-**Common Issues**:
-- **Images not appearing**: Check `filename` matches actual file in `assets/images/`
-- **Filters not working**: Check console for state changes, verify `AppState.filteredImages`
-- **View not rendering**: Check if `destroy()` was called, verify event listeners attached
-- **Performance lag**: Check `requestAnimationFrame` loops, verify GPU acceleration
 
 ---
 
-## Performance Considerations
+## Testing Checklist
 
-### Critical Performance Rules
-1. **Use `transform` for animations** - GPU-accelerated, never triggers reflow
-   ```javascript
-   element.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
-   ```
-
-2. **Batch DOM reads/writes** - Avoid layout thrashing
-   ```javascript
-   // Bad
-   element1.style.left = element2.offsetWidth + 'px';  // Read-write
-   element3.style.left = element4.offsetWidth + 'px';  // Read-write
-
-   // Good
-   const width2 = element2.offsetWidth;  // Read
-   const width4 = element4.offsetWidth;  // Read
-   element1.style.left = width2 + 'px';  // Write
-   element3.style.left = width4 + 'px';  // Write
-   ```
-
-3. **Use `requestAnimationFrame` for animations** - Syncs with display refresh
-   ```javascript
-   const animate = () => {
-       // Update positions
-       this.momentumRAF = requestAnimationFrame(animate);
-   };
-   requestAnimationFrame(animate);
-   ```
-
-4. **Cancel animations on destroy** - Prevent memory leaks
-   ```javascript
-   destroy() {
-       if (this.momentumRAF) {
-           cancelAnimationFrame(this.momentumRAF);
-           this.momentumRAF = null;
-       }
-   }
-   ```
-
-5. **Event delegation** - Fewer event listeners
-   ```javascript
-   // Instead of adding listener to each image
-   container.addEventListener('click', (e) => {
-       if (e.target.classList.contains('memory-image')) {
-           // Handle image click
-       }
-   });
-   ```
-
-6. **Debounce expensive operations** - E.g., resize events
-   ```javascript
-   let resizeTimeout;
-   window.addEventListener('resize', () => {
-       clearTimeout(resizeTimeout);
-       resizeTimeout = setTimeout(() => {
-           this.render();
-       }, 200);
-   });
-   ```
-
-### Current Optimizations
-- **Drift View**: Transform-only updates during drag (no re-render)
-- **Descent View**: Single transform combines rotation + zoom
-- **Filter Panel**: Updates state once, then view re-renders once
-- **Image Detail**: Reuses modal DOM, only updates content
-- **SVG Images**: Scalable without quality loss, smaller filesize
+- [ ] 112 entries in data.js (currently only 3!)
+- [ ] All image files exist and paths correct
+- [ ] Thematic_weights sum to 1.0 for each entry
+- [ ] Clinical grid displays 4 columns (desktop)
+- [ ] Timeline positions by year/compliance
+- [ ] Constellation clusters by theme
+- [ ] All filters work (thematic, time, compliance, performance, audience)
+- [ ] Reset button clears all filters
+- [ ] Modal opens with correct data
+- [ ] Modal adapts layout to aspect ratio
+- [ ] ESC key closes modal
+- [ ] Filter count updates
+- [ ] Responsive on mobile (768px, 480px)
 
 ---
 
-## Testing & Validation
+## Deployment
 
-### Manual Testing Checklist
-- [ ] All 30 memories visible in Drift view
-- [ ] All 30 memories visible in Descent view
-- [ ] View toggle switches correctly
-- [ ] Each theme filter works independently
-- [ ] Multiple themes combine (OR logic)
-- [ ] Timeline sliders adjust range
-- [ ] Timeline filters memories correctly
-- [ ] All 6 Quick Jump presets work
-- [ ] Clear All resets filters
-- [ ] Filter count updates correctly
-- [ ] Info modal opens/closes
-- [ ] Image detail modal shows correct data
-- [ ] Image detail modal for "notes" theme shows noteContent
-- [ ] Drift view momentum feels natural
-- [ ] Descent view rotation is smooth
-- [ ] Descent view zoom responds correctly
-- [ ] Images clickable in both views
-- [ ] Filter panel collapses/expands
-- [ ] Mobile responsive layout works
-- [ ] No console errors
-
-### Browser Console Checks
-```javascript
-// Verify data loaded
-console.log(MEMORIES.length);  // Should be 30
-
-// Verify state initialized
-console.log(AppState.filteredImages.length);  // Should be 30 (no filters)
-
-// Verify filter logic
-AppState.update({ filters: { selectedThemes: ['notes'] } });
-console.log(AppState.filteredImages.length);  // Should be memories with "notes" theme
-
-// Verify view
-console.log(App.currentView);  // Should be DriftView or DescentView
-```
+1. Complete all 112 entries in `data.js`
+2. Replace placeholder images with real images
+3. Test locally with `python -m http.server 8000`
+4. Deploy to GitHub Pages, Netlify, or Vercel
+5. Test on production URL
+6. Verify mobile on real devices
 
 ---
 
 ## AI Assistant Guidelines
 
-### When Working on This Project
+### Do
 
-1. **Read Before Modifying**
-   - Always read the file you're about to modify
-   - Understand the existing pattern before changing
-   - Maintain consistency with surrounding code
+- Read files before modifying
+- Maintain documentation style (PURPOSE/HOW/INPUT/OUTPUT)
+- Test in browser after changes
+- Keep global namespace pattern
+- Use design tokens (CSS variables)
+- Handle empty states
+- Add null checks for compliance scores
 
-2. **Respect the Architecture**
-   - Don't introduce dependencies/frameworks
-   - Don't create build processes
-   - Keep the global namespace pattern
-   - Follow the file loading order
+### Don't
 
-3. **Maintain the Style**
-   - Use existing naming conventions
-   - Add JSDoc comments for new functions
-   - Console log with `[ModuleName]` prefix
-   - Keep the minimalist aesthetic
+- Break script loading order
+- Add external libraries/frameworks
+- Add colors outside defined palette
+- Hardcode values
+- Skip function documentation
+- Change `thematic_weights` without ensuring sum = 1.0
 
-4. **Test Thoroughly**
-   - Manually test in browser after changes
-   - Check console for errors
-   - Verify state updates propagate
-   - Test both Drift and Descent views
+### Important Notes
 
-5. **Performance First**
-   - Use transforms for positioning
-   - Batch DOM operations
-   - Use requestAnimationFrame for animations
-   - Cancel animations on cleanup
-
-6. **Ask Before Major Changes**
-   - Changing architecture patterns
-   - Adding external dependencies
-   - Modifying design tokens significantly
-   - Restructuring file organization
-
-### Common Pitfalls to Avoid
-
-- **Don't** hardcode values (use CSS variables)
-- **Don't** skip cleanup in `destroy()` methods
-- **Don't** break the file loading order
-- **Don't** introduce colors outside grayscale palette
-- **Don't** use different fonts (Courier New only)
-- **Don't** add frameworks/libraries
-- **Don't** create overly complex abstractions (keep it simple)
-- **Don't** forget to update `filteredImages` when filters change
-- **Don't** add event listeners without removing them on cleanup
-
-### Debugging Tips
-
-1. **Check console logs** - Each module logs initialization
-2. **Inspect `AppState`** - Single source of truth for all state
-3. **Verify file paths** - Relative to `index.html`
-4. **Check event listeners** - Use browser DevTools to inspect
-5. **Monitor requestAnimationFrame** - Ensure cleanup on destroy
-6. **Test state changes** - Use browser console to manually update state
-
----
-
-## Project Context & History
-
-### Recent Updates
-- **Phase 6** (Latest): Complete Descent View with perspective, rotation, and zoom
-- **Phase 5**: Complete Drift View with gravity wells, momentum, controlled overlap
-- **User Feedback**: Collapsible filters, removed memory state filter
-- **Initial Release**: Phases 1-4 (Foundation, data, components)
-
-### Known Limitations
-- 30 sample memories (placeholder content)
-- No lazy loading (all images load upfront)
-- No backend/database (static data)
-- No user accounts/personalization
-- Desktop-optimized (mobile works but less polished)
-
-### Future Considerations
-- Real content population (actual photos, reflections)
-- Lazy loading for performance at scale
-- Keyboard navigation improvements
-- Accessibility audit (ARIA labels, screen reader support)
-- Animation preferences (respect prefers-reduced-motion)
-- Export/share functionality
-- Print styles
-
----
-
-## Questions or Issues?
-
-If you encounter something not covered in this guide:
-
-1. **Check existing code** - Pattern likely exists elsewhere
-2. **Read JSDoc comments** - Function-level documentation
-3. **Review git history** - `git log` shows recent changes and reasoning
-4. **Test in browser** - Console logs reveal runtime behavior
-5. **Ask the user** - When in doubt, clarify requirements
+- **data.js currently has only 3 entries** - needs 109 more
+- **No build process** - just open HTML files
+- **Extensively document** for non-technical audiences
+- **Contradictions are features** - highlight, don't hide
 
 ---
 
 **End of CLAUDE.md**
 
-This document should be updated whenever significant architectural changes are made to the project.
+Update this document when architecture or conventions change.
