@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost—Found Archive</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/views.css">
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <button id="filter-toggle" class="filter-toggle" aria-label="Toggle filter panel">☰</button>
+    <h1 class="site-title">LOST—FOUND</h1>
+    <div class="top-bar-controls">
+      <button id="zoom-out" class="icon-btn" aria-label="Zoom out">−</button>
+      <button id="zoom-in" class="icon-btn" aria-label="Zoom in">+</button>
+      <button id="info-toggle" class="icon-btn" aria-label="Information">?</button>
+    </div>
+  </header>
+
+  <!-- View Mode Tabs -->
+  <div class="view-mode-tabs">
+    <button class="view-mode-btn active" data-view="clinical">Clinical</button>
+    <button class="view-mode-btn" data-view="evolutionary">Evolutionary</button>
+    <button class="view-mode-btn" data-view="thematic">Thematic</button>
+  </div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+
+    <!-- Filter Panel -->
+    <aside id="filter-panel" class="filter-panel">
+      <div class="filter-panel-header">
+        <h2>Personal Archive</h2>
+        <p class="date-range">1990-2025</p>
+      </div>
+
+      <div class="filter-section">
+        <details open>
+          <summary>Thematic Categories</summary>
+          <div class="filter-group">
+            <label class="checkbox-label"><input type="checkbox" name="thematic" value="notes"> notes</label>
+            <label class="checkbox-label"><input type="checkbox" name="thematic" value="moments"> moments</label>
+            <label class="checkbox-label"><input type="checkbox" name="thematic" value="faces"> faces</label>
+            <label class="checkbox-label"><input type="checkbox" name="thematic" value="nostalgia"> nostalgia</label>
+            <label class="checkbox-label"><input type="checkbox" name="thematic" value="play"> play</label>
+            <label class="checkbox-label"><input type="checkbox" name="thematic" value="belonging"> belonging</label>
+            <label class="checkbox-label"><input type="checkbox" name="thematic" value="change"> change</label>
+            <label class="checkbox-label"><input type="checkbox" name="thematic" value="limbo"> limbo</label>
+          </div>
+        </details>
+      </div>
+
+      <div class="filter-section">
+        <details open>
+          <summary>Time Period</summary>
+          <input type="range" id="time-slider" min="1990" max="2025" value="2025" step="1" class="time-slider">
+          <div id="time-range-display" class="time-range-display">1990 — 2025</div>
+        </details>
+      </div>
+
+      <div class="filter-section">
+        <details open>
+          <summary>Brand Compliance</summary>
+          <div class="filter-group">
+            <label class="radio-label"><input type="radio" name="compliance" value="all" checked> All</label>
+            <label class="radio-label"><input type="radio" name="compliance" value="high"> High (75-100%)</label>
+            <label class="radio-label"><input type="radio" name="compliance" value="medium"> Medium (50-74%)</label>
+            <label class="radio-label"><input type="radio" name="compliance" value="low"> Low (25-49%)</label>
+            <label class="radio-label"><input type="radio" name="compliance" value="deviant"> Deviant (0-24%)</label>
+          </div>
+        </details>
+      </div>
+
+      <div class="filter-section">
+        <details>
+          <summary>Performance Type</summary>
+          <div class="filter-group">
+            <label class="checkbox-label"><input type="checkbox" name="performance" value="authentic"> Authentic</label>
+            <label class="checkbox-label"><input type="checkbox" name="performance" value="performed"> Performed</label>
+            <label class="checkbox-label"><input type="checkbox" name="performance" value="ambiguous"> Ambiguous</label>
+          </div>
+        </details>
+      </div>
+
+      <div class="filter-section">
+        <details>
+          <summary>Audience Context</summary>
+          <div class="filter-group">
+            <label class="checkbox-label"><input type="checkbox" name="audience" value="solitude"> Solitude</label>
+            <label class="checkbox-label"><input type="checkbox" name="audience" value="intimate_circle"> Intimate circle</label>
+            <label class="checkbox-label"><input type="checkbox" name="audience" value="trusted_few"> Trusted few</label>
+            <label class="checkbox-label"><input type="checkbox" name="audience" value="familial"> Familial</label>
+            <label class="checkbox-label"><input type="checkbox" name="audience" value="extended_network"> Extended network</label>
+            <label class="checkbox-label"><input type="checkbox" name="audience" value="public"> Public</label>
+          </div>
+        </details>
+      </div>
+
+      <div class="filter-footer">
+        <div id="image-count">Showing: 112 of 112</div>
+        <button id="reset-filters" class="reset-button">Reset all filters</button>
+      </div>
+    </aside>
+
+    <!-- Main Canvas -->
+    <main id="main-canvas" class="main-canvas"></main>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div id="modal" class="modal"></div>
+  </div>
+
+  <!-- Info Panel -->
+  <div id="info-panel" class="info-panel">
+    <button id="info-close" class="info-close">×</button>
+    <div style="padding:40px;">
+      <h2 style="font-size:18px; margin-bottom:20px;">Methodology</h2>
+      <p style="margin-bottom:16px;">Each image scored (0-100%) across three dimensions: Visual Identity (40%), Behavioral Alignment (30%), Voice/Audience Alignment (30%). Images below 50% are contradictions.</p>
+
+      <h3 style="font-size:14px; margin-top:32px; margin-bottom:12px;">Thematic Categories</h3>
+      <p style="font-size:12px; line-height:1.8;">
+        <strong>notes:</strong> observations, fragments<br>
+        <strong>moments:</strong> fleeting captures<br>
+        <strong>faces:</strong> portraits, identity work<br>
+        <strong>nostalgia:</strong> memory, longing<br>
+        <strong>play:</strong> joy, experimentation<br>
+        <strong>belonging:</strong> connection, home<br>
+        <strong>change:</strong> transformation, transition<br>
+        <strong>limbo:</strong> in-between states
+      </p>
+
+      <h3 style="font-size:14px; margin-top:32px; margin-bottom:12px;">About</h3>
+      <p style="font-size:12px; line-height:1.6;">This project sits at the intersection of sincerity and irony, treating personal identity as both brand and human experience. By scoring each image against my own guidelines, I reveal both the labor of self-presentation and its inevitable failures. The contradictions become the most honest documentation of all.</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/views/grid.js"></script>
+  <script src="js/views/timeline.js"></script>
+  <script src="js/views/constellation.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
