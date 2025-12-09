@@ -122,7 +122,7 @@ body {
 }
 
 .date-range {
-  font-size: 10px;
+  font-size: 14px;
   opacity: 0.6;
 }
 
@@ -163,7 +163,7 @@ details {
 }
 
 summary {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 500;
   opacity: 0.7;
   margin-bottom: 12px;
@@ -174,7 +174,7 @@ summary {
 
 summary::before {
   content: '▼';
-  font-size: 8px;
+  font-size: 14px;
   transition: transform 150ms ease;
 }
 
@@ -213,7 +213,7 @@ details:not([open]) summary::before {
 }
 
 .time-range-display {
-  font-size: 10px;
+  font-size: 14px;
   text-align: center;
   opacity: 0.6;
 }
@@ -225,7 +225,7 @@ details:not([open]) summary::before {
 }
 
 #image-count {
-  font-size: 11px;
+  font-size: 14px;
   margin-bottom: 12px;
 }
 
